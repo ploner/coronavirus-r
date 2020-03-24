@@ -30,9 +30,8 @@ loadData = function(fileName, columnName) {
 }
 
 allData = 
-  loadData("time_series_19-covid-Confirmed.csv", "CumConfirmed") %>%
-    inner_join(loadData("time_series_19-covid-Deaths.csv", "CumDeaths")) %>%
-    inner_join(loadData("time_series_19-covid-Recovered.csv", "CumRecovered"))
+  loadData("time_series_covid19_confirmed_global.csv", "CumConfirmed") %>%
+    inner_join(loadData("time_series_covid19_deaths_global.csv", "CumDeaths"))
 
 function(input, output, session) {
   
@@ -52,7 +51,6 @@ function(input, output, session) {
       mutate(
         dateStr = format(date, format="%b %d, %Y"),    # Jan 20, 2020
         NewConfirmed=CumConfirmed - lag(CumConfirmed, default=0),
-        NewRecovered=CumRecovered - lag(CumRecovered, default=0),
         NewDeaths=CumDeaths - lag(CumDeaths, default=0)
       )
   })
@@ -92,7 +90,7 @@ function(input, output, session) {
             x= ~date, y=data[[paste0(varPrefix, metric)]], type='bar', 
             name=paste(legendPrefix, metric, "Cases"),
             marker=list(
-              color=switch(metric, Deaths='rgb(200,30,30)', Recovered='rgb(30,200,30)', Confirmed='rgb(100,140,240)'),
+              color=switch(metric, Deaths='rgb(200,30,30)', Confirmed='rgb(100,140,240)'),
               line=list(color='rgb(8,48,107)', width=1.0)
             )
           )

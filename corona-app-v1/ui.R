@@ -24,8 +24,8 @@ shinyUI(fluidPage(
       4, 
       checkboxGroupInput(
         "metrics", label=h5("Selected Metrics"), 
-        choices=c("Confirmed", "Deaths", "Recovered"), 
-        selected=c("Confirmed", "Deaths", "Recovered"), width="100%")
+        choices=c("Confirmed", "Deaths"), 
+        selected=c("Confirmed", "Deaths"), width="100%")
     )
   ),
   fluidRow(
