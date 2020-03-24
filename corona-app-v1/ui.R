@@ -2,6 +2,7 @@ library(shiny)
 library(plotly)
 
 shinyUI(fluidPage(
+  tags$head(includeHTML("google-analytics.html")),
   tags$style(
     type='text/css', 
     ".selectize-input { font-family: Courier New, monospace; } .selectize-dropdown { font-family: Courier New, monospace; }"
