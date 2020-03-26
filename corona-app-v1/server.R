@@ -1,8 +1,7 @@
 # Data from:
 # Johns Hopkins University Center for System Science and Engineering (JHU CCSE)
 
-library(dplyr)
-library(tidyr)  
+library(tidyverse)  
 
 baseURL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series"
 
@@ -16,7 +15,8 @@ loadData = function(fileName, columnName) {
   if(!file.exists(fileName) || minutesSinceLastUpdate(fileName) > 10) {
     data = read.csv(file.path(baseURL, fileName), check.names=FALSE, stringsAsFactors=FALSE) %>%
       select(-Lat, -Long) %>% 
-      pivot_longer(-(1:2), names_to="date", values_to=columnName) %>% 
+      pivot_longer(-(1:2), names_to = "date", values_to = columnName) %>% 
+      rename(`Province/State` = 1) %>%
       mutate(
         date=as.Date(date, format="%m/%d/%y"),
         `Country/Region`=if_else(`Country/Region` == "", "?", `Country/Region`),
@@ -30,9 +30,9 @@ loadData = function(fileName, columnName) {
 }
 
 allData = 
-  loadData("time_series_19-covid-Confirmed.csv", "CumConfirmed") %>%
-    inner_join(loadData("time_series_19-covid-Deaths.csv", "CumDeaths")) %>%
-    inner_join(loadData("time_series_19-covid-Recovered.csv", "CumRecovered"))
+  loadData("time_series_covid19_confirmed_global.csv", "CumConfirmed") %>%
+    inner_join(loadData("time_series_covid19_deaths_global.csv", "CumDeaths")) %>%
+    inner_join(loadData("time_series_covid19_recovered_global.csv", "CumRecovered"))
 
 function(input, output, session) {
   
