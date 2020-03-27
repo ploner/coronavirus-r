@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  corona-r:
+    build:
+      context: .
+    image: corona-r:$VERSION
+    container_name: corona-r
+    ports:
+      - "3801:3838"
+    environment:
+      - TARGET=$TARGET
+    restart: unless-stopped
